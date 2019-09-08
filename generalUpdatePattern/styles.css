@@ -1,0 +1,9 @@
+body {
+	margin: 0;
+}
+text {
+	fill: white;
+	font-size: 2em;
+	font-family: sans-serif;
+	text-anchor: middle;
+}

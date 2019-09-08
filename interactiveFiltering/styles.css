@@ -1,0 +1,43 @@
+body {
+	margin: 0;
+	overflow: hidden;
+}
+.sphere {
+	fill: darkblue;
+}
+.country {
+	stroke: black;
+	stroke-width: 0.05px;
+}
+.country:hover {
+	fill: red;
+}
+.highlighted {
+	stroke-width: 0.5px;
+}
+.text-legend {
+	text-shadow: 
+		-1px -1px 3px white,
+		-1px  1px 3px white,
+		 1px -1px 3px white,
+		 1px  1px 3px white;
+}
+.legend-item {
+	cursor: pointer;
+}
+select {
+	float: right;
+	margin-top: 5%;
+	margin-right: 10%;
+	padding: 5px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+button {
+	float: right;
+	margin-top: 10%;
+	margin-right: -3.5%;
+	border-radius: 10px;
+	padding: 5px;
+	cursor: pointer;
+}

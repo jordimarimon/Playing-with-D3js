@@ -1,0 +1,26 @@
+body {
+	margin: 0;
+	overflow: hidden;
+}
+.sphere {
+	fill: darkblue;
+}
+.country {
+	stroke: black;
+	stroke-width: 0.05px;
+}
+.country:hover {
+	fill: red;
+}
+.text-legend {
+	text-shadow: 
+		-1px -1px 3px white,
+		-1px  1px 3px white,
+		 1px -1px 3px white,
+		 1px  1px 3px white;
+}
+select {
+	float: right;
+	margin-top: 5%;
+	margin-right: 10%;
+}

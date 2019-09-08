@@ -1,0 +1,32 @@
+body {
+	margin: 0;
+}
+.circle--color {
+	fill: steelblue;
+	opacity: 0.5;
+}
+.y-axis, .x-axis {
+	font-size: 1.2em;
+}
+.tick > text {
+	fill: #635F5D;
+}
+.tick > line {
+	stroke: #C0C0BB;
+}
+.labels__text {
+	fill: #635F5D;
+	font-size: 1.2em;
+}
+#menus {
+	font-size: 1.5em;
+	margin-left: 25%;
+	margin-top: 3%;
+}
+#menus select {
+	font-size: 1.5rem;
+	border-radius: 10px;
+}
+#menus select option {
+	font-size: 1rem;
+}

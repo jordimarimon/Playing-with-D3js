@@ -1,0 +1,27 @@
+body {
+	margin: 0;
+}
+.title {
+	font-family: sans-serif;
+	font-size: 2em;
+}
+.container {
+	width: 800px;
+	margin: 5% auto;
+	border: 1px solid black;
+}
+.area {
+}
+.labels {
+	font-size: 1.2em;
+}
+.tick > text {
+	fill: #635F5D;
+}
+.tick > line {
+	stroke: #C0C0BB;
+}
+.labels__text {
+	fill: #635F5D;
+	font-size: 1.2em;
+}

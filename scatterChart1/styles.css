@@ -1,0 +1,29 @@
+body {
+	margin: 0;
+}
+.title {
+	font-family: sans-serif;
+	width: 40%;
+	margin: 3% auto;
+}
+.container {
+	width: 800px;
+	margin: auto;
+	border: 1px solid black;
+}
+.circle--color {
+	fill: steelblue;
+}
+.labels {
+	font-size: 1.2em;
+}
+.tick > text {
+	fill: #635F5D;
+}
+.tick > line {
+	stroke: #C0C0BB;
+}
+.labels__text {
+	fill: #635F5D;
+	font-size: 1.2em;
+}
