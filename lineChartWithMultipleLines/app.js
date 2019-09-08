@@ -1,32 +1,42 @@
+const width = 800;
+const height = 400;
+const margin = { top: 70, right: 200, bottom: 70, left: 120 };
+const innerWidth = width - margin.left - margin.right;
+const innerHeight = height - margin.top - margin.bottom;
+
+const svg = d3.select('svg')
+	.attr('width', width)
+	.attr('height', height);
+
+let selectedDate;
+let data;
+
+const xValue = d => d.timestamp;
+const yValue = d => d.temperature;
+const title = 'A week of temperature around the world';
+const xLabel = 'Date';
+const yLabel = 'Temperature';
+
+let colorLegendG = svg.append('g');
+let lineChartG = svg.append('g');
+const colorScale = d3.scaleOrdinal()
+	.range(d3.schemeCategory10);
 
 d3.csv('data-canvas-sense-your-city-one-week.csv').then(csv => {
 	csv.forEach(d => {
 		d.temperature = +d.temperature;
 		d.timestamp = new Date(d.timestamp);
 	});
-
-	render(csv);
+	data = csv;
+	render();
 });
+function render() {
+	const nestedData = d3.nest()
+		.key(d => d.city)
+		.entries(data)
+		.sort(compare);
 
-const colorScale = d3.scaleOrdinal();
-
-function render(data) {
-	const xValue = d => d.timestamp;
-	const yValue = d => d.temperature;
-
-	const title = 'A week of temperature around the world';
-	const xLabel = 'Date';
-	const yLabel = 'Temperature'
-
-	const width = 800;
-	const height = 400;
-	const margin = { top: 70, right: 200, bottom: 70, left: 120 };
-	const innerWidth = width - margin.left - margin.right;
-	const innerHeight = height - margin.top - margin.bottom;
-
-	const svg = d3.select('svg')
-		.attr('width', width)
-		.attr('height', height);
+	colorScale.domain(nestedData.map(d => d.key));
 
 	const xScale = d3.scaleTime()
 		.domain(d3.extent(data, xValue))
@@ -46,10 +56,12 @@ function render(data) {
 		.tickSize(-innerWidth)
 		.tickPadding(10);
 
-	const g = svg.append('g')
+	const g = lineChartG.selectAll('.container').data([null]);
+	const gEnter = g.enter().append('g')
+		.attr('class', 'container')
 		.attr('transform', `translate(${margin.left},${margin.top})`);
 
-	const yAxisGroup = g.append('g')
+	const yAxisGroup = gEnter.append('g')
 		.call(yAxis)
 		.attr('class', 'labels');
 	
@@ -63,7 +75,7 @@ function render(data) {
 		.attr('text-anchor', 'middle')
 		.text(yLabel);
 
-	const xAxisGroup = g.append('g')
+	const xAxisGroup = gEnter.append('g')
 		.call(xAxis)
 		.attr('transform', `translate(0, ${innerHeight})`)
 		.attr('class', 'labels');
@@ -82,37 +94,58 @@ function render(data) {
 		.y(d => yScale(yValue(d)))
 		.curve(d3.curveBasis);
 
-	const nestedData = d3.nest()
-		.key(d => d.city)
-		.entries(data)
-		.sort(compare);
-
-	colorScale
-		.domain(nestedData.map(d => d.key))
-		.range(d3.schemeCategory10);
-
-	g.selectAll('path.line').data(nestedData)
+	gEnter.selectAll('path.line').data(nestedData)
 		.enter().append('path')
 			.attr('class', 'line')
 			.attr('stroke', d => colorScale(d.key))
 			.attr('d', d => lineGenerator(d.values));
 
-	g.append('text')
+	const line = g.merge(gEnter).selectAll('line.cursor-line').data([null]);
+	const lineEnter = line.enter().append('line');
+	line.merge(lineEnter)
+		.attr('class', 'cursor-line')
+		.attr('x1', xScale(selectedDate))
+		.attr('x2', xScale(selectedDate))
+		.attr('y1', 0)
+		.attr('y2', innerHeight)
+		.attr('stroke-width', 3)
+		.attr('stroke', 'black');
+
+	line.exit().remove();
+
+	gEnter.append('text')
 		.attr('class', 'title')
 		.attr('x', innerWidth / 2)
 		.attr('y', -30)
 		.attr('text-anchor', 'middle')
 		.text(title);
 
-	svg.append('g')
-		.attr('transform', `translate(100, 150)`)
-		.call(colorLegend);
-}
-const circleRadius = 5;
-const spacing = 25;
-const textOffset = 15;
+	gEnter.append('rect')
+		.attr('width', innerWidth)
+		.attr('height', innerHeight)
+		.attr('fill', 'none')
+		.attr('pointer-events', 'all')
+		.on('mousemove', () => {
+			const x = d3.mouse(gEnter.node())[0];
+			selectedDate = xScale.invert(x);
+			render();
+		});
 
-function colorLegend(selection) {
+	colorLegendG.selectAll('.legend').data([null])
+		.enter().append('g')
+		.attr('class', 'legend')
+		.attr('transform', `translate(100, 150)`)
+		.call(colorLegend, {
+			circleRadius: 5,
+			spacing: 25,
+			textOffset: 15
+		});
+}
+function colorLegend(selection, props) {
+	const circleRadius = props.circleRadius;
+	const spacing = props.spacing;
+	const textOffset = props.textOffset;
+
 	const groups = selection.selectAll('g').data(colorScale.domain());
 
 	const groupsEnter = groups.enter().append('g');
