@@ -14,5 +14,6 @@ This charts were made with the amazing course from [freeCodeCamp Youtube Channel
 * [Simple Map](https://jordimarimon.github.io/Playing-with-D3js/map/map.html)
 * [Scatter Map with Menu](https://jordimarimon.github.io/Playing-with-D3js/scatterChartWithMenu/scatterChart.html)
 * [Tree Map](https://jordimarimon.github.io/Playing-with-D3js/treeMap/treeMap.html)
+* [Line Chart with Multiple Lines](https://jordimarimon.github.io/Playing-with-D3js/lineChartWithMultipleLines/lineChart.html)
 
 
